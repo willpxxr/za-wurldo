@@ -59,9 +59,9 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=sha,prefix={{branch}}-,enable=${{ github.event_name != 'release' }}
-            type=semver,pattern={{version}},enable=${{ github.event_name == 'release' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name == 'release' }}
+            type=sha,prefix={{branch}}-,enable=${{ !(github.event_name == 'release' && github.event.action == 'created') }}
+            type=semver,pattern={{version}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
       - name: Build And Push Container
         uses: docker/build-push-action@v2
         with:

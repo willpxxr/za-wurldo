@@ -1,0 +1,30 @@
+name: Release
+on:
+  workflow_run:
+    workflows:
+      - Continuous Integration
+    branches:
+      - main
+    types:
+      - completed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.11
+        with:
+          versionSpec: '5.x'
+      - name: Determine Version
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          useConfigFile: true
+          configFilePath: GitVersion.yml
+      - name: Tag Release
+        run: |
+          git tag $GITVERSION_SEMVER && git push origin $GITVERSION_SEMVER

@@ -25,6 +25,13 @@ jobs:
         with:
           useConfigFile: true
           configFilePath: GitVersion.yml
-      - name: Tag Release
+      - name: Push Tag
         run: |
           git tag $GITVERSION_SEMVER && git push origin $GITVERSION_SEMVER
+      - name: Create Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}

@@ -1,12 +1,8 @@
 name: Release
 on:
-  workflow_run:
-    workflows:
-      - Continuous Integration
+  push:
     branches:
-      - main
-    types:
-      - completed
+      - 'main'
 
 jobs:
   release:
@@ -29,7 +25,7 @@ jobs:
       - name: Create Release
         uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_SECRET }}
         with:
           tag_name: ${{ steps.git-version.outputs.semVer }}
           release_name: Release ${{ steps.git-version.outputs.semVer }}

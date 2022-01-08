@@ -39,6 +39,10 @@ jobs:
         working-directory: ./backend
         run: |
           go mod download
+      - name: Ensure Go Modules Consistency
+        working-directory: ./backend
+        run: |
+          go mod verify
       - name: Build
         working-directory: ./backend/cmd
         run: |

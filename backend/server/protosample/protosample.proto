@@ -1,0 +1,15 @@
+syntax = "proto3";
+package protosample;
+
+option go_package = "github.com/willpxxr/za-wurldo/backend/server/protosample";
+
+service ProtoSample {
+  rpc Get(EmptyMessage) returns (SampleMessage) {}
+  rpc Put(SampleMessage) returns (SampleMessage) {}
+}
+
+message EmptyMessage {}
+
+message SampleMessage {
+  string message = 1;
+}

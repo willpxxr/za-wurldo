@@ -2,11 +2,11 @@ FROM docker.io/library/golang:1.17 as builder
 
 WORKDIR /go/src/github.com/willpxxr/za-wurldo/backend
 
-ADD ["backend/go.mod", "backend/go.sum", "./"]
+ADD ["go.mod", "go.sum", "./"]
 
 RUN go mod download
 
-ADD ["backend", "."]
+ADD [".", "."]
 
 WORKDIR /go/src/github.com/willpxxr/za-wurldo/backend/cmd
 

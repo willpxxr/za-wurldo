@@ -1,18 +1,18 @@
 FROM node:17.3.0-alpine as builder
 
-WORKDIR /go/src/github.com/willpxxr/za-wurldo/frontend
+WORKDIR yarn/src/github.com/willpxxr/za-wurldo/frontend
 
-ADD ["ui/package.json", "ui/yarn.lock", "./"]
+ADD ["package.json", "yarn.lock", "./"]
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
-ADD ["frontend/", "."]
+ADD [".", "."]
 
 RUN yarn build
 
 FROM alpine:3.15
 
-COPY --from=builder /go/src/github.com/willpxxr/za-wurldo/frontend/build/ /usr/local/bin/frontend/
+COPY --from=builder yarn/src/github.com/willpxxr/za-wurldo/frontend/build/ /usr/local/bin/frontend/
 
 USER 999
 

@@ -1,6 +1,7 @@
 package server
 
 import (
+	protosamplegenerated "github.com/willpxxr/za-wurldo/backend/pkg/api/protosample"
 	"github.com/willpxxr/za-wurldo/backend/server/protosample"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -17,7 +18,7 @@ func NewServer() *Server {
 func (s *Server) CreateGRPC() *grpc.Server {
 	server := grpc.NewServer()
 
-	protosample.RegisterProtoSampleServer(server, protosample.NewServer("HELLO"))
+	protosamplegenerated.RegisterProtoSampleServer(server, protosample.NewServer("HELLO"))
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 	reflection.Register(server)
 

@@ -1,7 +1,7 @@
 syntax = "proto3";
-package protosample;
+option go_package = "github.com/willpxxr/za-wurldo/backend/pkg/api/protosample";
 
-option go_package = "github.com/willpxxr/za-wurldo/backend/server/protosample";
+package protosample;
 
 service ProtoSample {
   rpc Get(EmptyMessage) returns (SampleMessage) {}

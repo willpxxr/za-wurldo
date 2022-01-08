@@ -2,11 +2,12 @@ package protosample
 
 import (
 	"context"
+	"github.com/willpxxr/za-wurldo/backend/pkg/api/protosample"
 	"log"
 )
 
 type DefaultProtoSampleServer struct {
-	UnimplementedProtoSampleServer
+	protosample.UnimplementedProtoSampleServer
 	message string
 }
 
@@ -18,12 +19,12 @@ func NewServer(
 	}
 }
 
-func (d *DefaultProtoSampleServer) Get(_ context.Context, _ *EmptyMessage) (*SampleMessage, error) {
+func (d *DefaultProtoSampleServer) Get(_ context.Context, _ *protosample.EmptyMessage) (*protosample.SampleMessage, error) {
 	log.Println("Handling request to get message")
-	return &SampleMessage{Message: d.message}, nil
+	return &protosample.SampleMessage{Message: d.message}, nil
 }
 
-func (d *DefaultProtoSampleServer) Put(_ context.Context, request *SampleMessage) (*SampleMessage, error) {
+func (d *DefaultProtoSampleServer) Put(_ context.Context, request *protosample.SampleMessage) (*protosample.SampleMessage, error) {
 	log.Printf("Handling request to put message with new value %s", request.Message)
 	d.message = request.Message
 

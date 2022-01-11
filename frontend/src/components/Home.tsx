@@ -1,4 +1,4 @@
-import {Container, Image} from "react-bootstrap";
+import {Container, Image,} from "react-bootstrap";
 import React from "react";
 import {Socials} from "./Socials";
 

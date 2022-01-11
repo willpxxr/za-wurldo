@@ -1,18 +1,24 @@
 name: Continuous Integration (React)
 
 on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
-  release:
-    types:
-      - created
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      isRelease:
+        default: false
+        type: boolean
+        required: true
+      nodeVersion:
+        default: 17.3
+        required: false
+        type: string
+    secrets:
+      registryPassword:
+        required: true
 
 env:
-  NODE_VERSION: 17.3
   REGISTRY: ghcr.io
 
 jobs:
@@ -25,7 +31,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ inputs.nodeVersion }}
       - name: Determine Yarn Cache Directory
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -34,15 +40,15 @@ jobs:
         with:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-frontend-${{ hashFiles('frontend/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-frontend-
+            ${{ runner.os }}-yarn-
       - name: Install Packages
-        working-directory: ./frontend
+        working-directory: ./${{ inputs.path }}
         run: |
           yarn install --frozen-lockfile
       - name: Build
-        working-directory: ./frontend
+        working-directory: ./${{ inputs.path }}
         run: |
           yarn build
   artifacts:
@@ -58,22 +64,21 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.registryPassword }}
       - name: Extract Container Metadata
         id: metadata
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}-frontend
+          images: ${{ env.REGISTRY }}/${{ github.repository }}-${{ inputs.path }}
           flavor: |
             latest=auto
           tags: |
-            type=sha,prefix={{branch}}-,enable=${{ !(github.event_name == 'release' && github.event.action == 'created') }}
-            type=semver,pattern={{version}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
+            type=semver,pattern={{version}},enable=${{ inputs.isRelease }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ inputs.isRelease }}
       - name: Build And Push Container
         uses: docker/build-push-action@v2
         with:
-          context: ./frontend
-          push: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+          context: ./${{ inputs.path }}
+          push: ${{ inputs.isRelease }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}

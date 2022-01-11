@@ -1,8 +1,10 @@
 name: Release
+
 on:
-  push:
-    branches:
-      - 'main'
+  workflow_call:
+    secrets:
+      githubToken:
+        required: true
 
 jobs:
   release:
@@ -25,7 +27,7 @@ jobs:
       - name: Create Release
         uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTIONS_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.githubToken }}
         with:
           tag_name: ${{ steps.git-version.outputs.semVer }}
           release_name: Release ${{ steps.git-version.outputs.semVer }}

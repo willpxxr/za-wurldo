@@ -1,0 +1,36 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+  release:
+    types:
+      - created
+
+jobs:
+  backend:
+    uses: .github/workflows/templates/ci-go.yaml@main
+    with:
+      path: backend
+      isRelease: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+    secrets:
+      registryPassword: ${{ secrets.GITHUB_TOKEN }}
+  frontend:
+    uses: .github/workflows/templates/ci-react.yaml@main
+    with:
+      path: frontend
+      isRelease: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+    secrets:
+      registryPassword: ${{ secrets.GITHUB_TOKEN }}
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - backend
+      - frontend
+    uses: .github/workflows/templates/release.yaml@main
+    secrets:
+      githubToken: ${{ secrets.ACTIONS_SECRET }}

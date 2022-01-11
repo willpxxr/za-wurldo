@@ -1,23 +1,30 @@
 name: Continuous Integration (Go)
 
 on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
-  release:
-    types:
-      - created
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      isRelease:
+        default: false
+        type: boolean
+        required: true
+      goVersion:
+        default: '1.17'
+        required: false
+        type: string
+    secrets:
+      registryPassword:
+        required: true
 
 env:
-  GOLANG_VERSION: '1.17'
+  GOSUM_PATH: ${{ inputs.path }}/go.sum
   REGISTRY: ghcr.io
 
 jobs:
   build:
-    name: Build and Cache Backend
+    name: Build and Cache
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -25,26 +32,26 @@ jobs:
       - name: Setup Golang
         uses: actions/setup-go@v1
         with:
-          go-version: ${{ env.GOLANG_VERSION }}
+          go-version: ${{ inputs.goVersion }}
       - name: Restore Build Cache
         uses: actions/cache@v2
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-backend-${{ hashFiles('backend/go.sum') }}
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-backend-
+            ${{ runner.os }}-go-
       - name: Download Go Modules
-        working-directory: ./backend
+        working-directory: ./${{ inputs.path }}
         run: |
           go mod download
       - name: Ensure Go Modules Consistency
-        working-directory: ./backend
+        working-directory: ./${{ inputs.path }}
         run: |
           go mod verify
       - name: Build
-        working-directory: ./backend/cmd
+        working-directory: ./${{ inputs.path }}/cmd
         run: |
           go build
   artifacts:
@@ -60,22 +67,21 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.registryPassword }}
       - name: Extract Container Metadata
         id: metadata
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}-backend
+          images: ${{ env.REGISTRY }}/${{ github.repository }}-${{ inputs.path }}
           flavor: |
             latest=auto
           tags: |
-            type=sha,prefix={{branch}}-,enable=${{ !(github.event_name == 'release' && github.event.action == 'created') }}
-            type=semver,pattern={{version}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.event_name == 'release' && github.event.action == 'created' }}
+            type=semver,pattern={{version}},enable=${{ inputs.isRelease }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ inputs.isRelease }}
       - name: Build And Push Container
         uses: docker/build-push-action@v2
         with:
-          context: ./backend
-          push: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+          context: ./${{ inputs.path }}
+          push: ${{ inputs.isRelease }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}

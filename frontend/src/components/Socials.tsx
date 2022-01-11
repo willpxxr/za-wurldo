@@ -4,7 +4,6 @@ import {faEnvelope} from "@fortawesome/free-solid-svg-icons";
 import {LinkToSocial} from "./LinkToSocial";
 import React from "react";
 import {faCalendar} from "@fortawesome/free-solid-svg-icons/faCalendar";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
 
 const socials = [
     {

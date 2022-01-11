@@ -13,9 +13,8 @@ export interface FeatureFlagsProps {
 const flagsKey = "flags"
 
 export const FeatureFlags: FC<FeatureFlagsProps> = (props) => {
-    if (!localStorage.getItem(flagsKey)) {
-        localStorage.setItem(flagsKey, JSON.stringify(props.flags))
-    }
+    localStorage.setItem(flagsKey, JSON.stringify(props.flags))
+
     return (props.children as React.ReactElement)
 }
 

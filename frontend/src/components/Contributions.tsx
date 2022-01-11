@@ -1,19 +1,18 @@
 import {
     Button,
     Carousel,
-    CarouselItem,
-    Container, Image, Modal, ModalBody, ModalTitle,
+    CarouselItem, Col,
+    Container, Modal, ModalBody, ModalTitle, Row,
 } from "react-bootstrap";
 import React, {Component, FC, useState} from "react";
-import payments from '../assets/payments.png'
 import Holder from "holderjs";
 import ModalHeader from "react-bootstrap/ModalHeader";
 
+
 const experiences = [
     {
-        company: "Global Payments (Cayan)",
+        company: "Global Payments",
         duration: "2018-2020",
-        image: payments,
         projects: [
             {
                 name: "Legacy Genius Application",
@@ -40,25 +39,31 @@ export default class Contributions extends Component {
 
     render() {
         return (
-            <Container fluid className="d-block mx-auto">
-                <Carousel className="active img-fluid" variant="dark">
+            <Container fluid className="border d-flex flex-column flex-grow-1 overflow-auto text-white align-items-center justify-content-center">
+                <Carousel className="container-fluid active d-flex flex-grow-1 overflow-auto align-items-center justify-content-center" variant="dark">
                     { experiences.map(experience => (
-                        <CarouselItem>
-                            <Image src={experience.image} className="d-block mx-auto"/>
-                            <Carousel.Caption>
-                                <h1>{experience.company}</h1>
-                                <p>{experience.duration}</p>
+                        <CarouselItem className="d-flex flex-column flex-grow-1 overflow-auto text-white align-items-center justify-content-center">
+                            <Container>
+                                <Row className="border">
+                                    <Col className="border">
+                                        <h1>{experience.company}</h1>
+                                    </Col>
+                                    <Col className="mt-auto">
+                                        <p>{experience.duration}</p>
+                                    </Col>
+                                </Row>
+                            </Container>
+                            <Container className="border align-text-top">
                                 <h2>Projects</h2>
-                                <Container className="d-grid gap-2">
-                                { experience.projects.map(project => (
+                                <Container className="border d-flex flex-column justify-content-center gap-2">
+                                {experience.projects.map(project => (
                                     <ProjectModal name={project.name} description={project.description}/>
                                 ))}
                                 </Container>
-                            </Carousel.Caption>
+                            </Container>
                         </CarouselItem>
                     ))}
                 </Carousel>
-
             </Container>
         );
     }

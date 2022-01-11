@@ -2,7 +2,7 @@ import {
     Button,
     Carousel,
     CarouselItem,
-    Container, Image, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalTitle,
+    Container, Image, Modal, ModalBody, ModalTitle,
 } from "react-bootstrap";
 import React, {Component, FC, useState} from "react";
 import payments from '../assets/payments.png'
@@ -33,7 +33,7 @@ const experiences = [
     }
 ]
 
-export default class Experiences extends Component {
+export default class Contributions extends Component {
     componentDidMount() {
         Holder.run()
     }

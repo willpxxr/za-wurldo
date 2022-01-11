@@ -3,7 +3,8 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import {NavbarMain,} from "./components/NavbarMain";
 import {Container,} from "react-bootstrap";
-import Experiences from "./components/ProjectsMain";
+import Contributions from "./components/Contributions";
+import {Home} from "./components/Home";
 
 interface DecoratedRouteObject extends RouteObject {
     display?: String,
@@ -17,9 +18,9 @@ const routes: DecoratedRouteObject[] = [
         display: "Home",
     },
     {
-        path: "/projects",
-        element: <Experiences/>,
-        display: "Projects",
+        path: "/contributions",
+        element: <Contributions/>,
+        display: "Contributions",
     },
     {
         path: "/about",
@@ -43,21 +44,12 @@ export default function App() {
                     }
                 }))
             }/>
-            { useRoutes(routes) }
+            <Container className="mt-5">
+                { useRoutes(routes) }
+            </Container>
         </div>
     );
 }
-
-function Home() {
-    return (
-        <Container fluid>
-            <h1>willpxxr</h1>
-            <p>Software Engineer</p>
-        </Container>
-    )
-}
-
-
 
 function B() {
     return (

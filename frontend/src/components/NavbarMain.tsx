@@ -1,17 +1,7 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {Branding} from "./Branding";
-import {LinkToSocial} from "./LinkToSocial";
 import React, {FC} from "react";
-import {faLinkedin, faGithub} from "@fortawesome/free-brands-svg-icons";
-import {faDiscord} from "@fortawesome/free-brands-svg-icons/faDiscord";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
-const socials = [
-    { url: "https://github.com/willpxxr", icon: faGithub, },
-    { url: "https://www.linkedin.com/in/williamtjparr", icon: faLinkedin, },
-    { url: "https://discord.com/users/291248097898528778", icon: faDiscord, },
-    { url: "mailto:williamparr96@outlook.com", icon: faEnvelope, },
-]
+import {Socials} from "./Socials";
 
 export interface NavBarRoute {
     path: String | string,
@@ -33,9 +23,7 @@ export const NavbarMain: FC<NavbarMainProps> = (props) => (
                     ))}
                 </Nav>
                 <Nav role= "socials" className="ms-auto pe-md-5">
-                    {socials.map((social => (
-                        <LinkToSocial url={social.url} icon={social.icon} />
-                    )))}
+                    <Socials/>
                 </Nav>
             </Navbar.Collapse>
         </Container>

@@ -1,10 +1,12 @@
 import {useRoutes, RouteObject, Navigate} from "react-router-dom";
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.css';
 import {NavbarMain,} from "./components/NavbarMain";
 import {Container,} from "react-bootstrap";
 import Contributions from "./components/Contributions";
 import {Home} from "./components/Home";
+
+import 'bootstrap/dist/css/bootstrap.css';
+import './App.css'
 
 interface DecoratedRouteObject extends RouteObject {
     display?: String,
@@ -35,7 +37,7 @@ const routes: DecoratedRouteObject[] = [
 
 export default function App() {
     return (
-        <div style={{backgroundColor: '#313537', width: '100vw', height: '100vh'}}>
+        <div className="min-vh-100 d-flex flex-column bg-gunmetal">
             <NavbarMain routes={
                 routes.filter((route) => route.display != null).map((route => {
                     return {
@@ -44,9 +46,7 @@ export default function App() {
                     }
                 }))
             }/>
-            <Container className="mt-5">
-                { useRoutes(routes) }
-            </Container>
+            { useRoutes(routes) }
         </div>
     );
 }

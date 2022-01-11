@@ -13,14 +13,16 @@ on:
 
 jobs:
   backend:
-    uses: .github/workflows/ci-go-template.yaml@main
+    # TODO: Look into support for this ref instead of main
+    uses: willpxxr/za-wurldo/.github/workflows/ci-go-template.yaml@main
     with:
       path: backend
       isRelease: ${{ github.event_name == 'release' && github.event.action == 'created' }}
     secrets:
       registryPassword: ${{ secrets.GITHUB_TOKEN }}
   frontend:
-    uses: .github/workflows/ci-react-template.yaml@main
+    # TODO: Look into support for this ref instead of main
+    uses: willpxxr/za-wurldo/.github/workflows/ci-react-template.yaml@main
     with:
       path: frontend
       isRelease: ${{ github.event_name == 'release' && github.event.action == 'created' }}
@@ -31,6 +33,7 @@ jobs:
     needs:
       - backend
       - frontend
-    uses: .github/workflows/release-template.yaml@main
+    # TODO: Look into support for this ref instead of main
+    uses: willpxxr/za-wurldo/.github/workflows/release-template.yaml@main
     secrets:
       githubToken: ${{ secrets.ACTIONS_SECRET }}

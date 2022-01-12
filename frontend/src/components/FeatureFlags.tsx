@@ -10,7 +10,7 @@ export interface FeatureFlagsProps {
     flags: FeatureFlag[]
 }
 
-const flagsKey = "flags"
+const flagsKey = "com.willpxxr.flags"
 
 export const FeatureFlags: FC<FeatureFlagsProps> = (props) => {
     localStorage.setItem(flagsKey, JSON.stringify(props.flags))

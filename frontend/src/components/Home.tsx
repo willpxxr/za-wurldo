@@ -1,6 +1,7 @@
 import {Container, Image,} from "react-bootstrap";
 import React from "react";
 import {Socials} from "./Socials";
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 export const Home = () => (
     <Container fluid className="d-flex flex-column flex-grow-1 overflow-auto text-white align-items-center justify-content-center">

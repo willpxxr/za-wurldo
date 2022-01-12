@@ -2,11 +2,11 @@ import {useRoutes, RouteObject, Navigate} from "react-router-dom";
 import React from "react";
 import {NavbarMain,} from "./components/NavbarMain";
 import {Container,} from "react-bootstrap";
-import Contributions from "./components/Contributions";
 import {Home} from "./components/Home";
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css'
 import {Feature, FeatureFlag, FeatureFlags, isFeatureEnabled} from "./components/FeatureFlags";
+import {Contributions} from "./components/Contributions";
 
 interface DecoratedRouteObject extends RouteObject {
     display?: String,
@@ -37,7 +37,7 @@ const routes: DecoratedRouteObject[] = [
     }),
     {
         path: "*",
-        element: <Navigate to="/"/>
+        element: <Navigate to="/"/>,
     }
 ].filter((route) => (route != null)) as DecoratedRouteObject[]
 

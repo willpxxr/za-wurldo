@@ -12,7 +12,7 @@ export interface LinkToSocialProps {
 
 export const LinkToSocial: FC<LinkToSocialProps> = (props) => (
     <OverlayTrigger
-        placement="bottom"
+        placement="left"
         delay={{ show: 250, hide: 400 }}
         overlay={ <Tooltip id={`${props.name}-tooltip`}>
             {props.tooltip}

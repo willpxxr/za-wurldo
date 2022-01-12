@@ -4,7 +4,11 @@ updates:
     directory: "/frontend"
     schedule:
       interval: "daily"
+    reviewers:
+      - willpxrr
   - package-ecosystem: "gomod"
     directory: "/backend"
     schedule:
       interval: "daily"
+    reviewers:
+      - willpxrr

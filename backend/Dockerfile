@@ -1,4 +1,4 @@
-FROM docker.io/library/golang:1.17 as builder
+FROM docker.io/library/golang:1.17.6-alpine as builder
 
 WORKDIR /go/src/github.com/willpxxr/za-wurldo/backend
 

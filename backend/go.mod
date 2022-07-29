@@ -2,7 +2,7 @@ module github.com/willpxxr/za-wurldo/backend
 
 go 1.17
 
-require google.golang.org/protobuf v1.27.1
+require google.golang.org/protobuf v1.28.1
 
 require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect

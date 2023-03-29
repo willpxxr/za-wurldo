@@ -10,7 +10,7 @@ ADD [".", "."]
 
 RUN yarn build
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 COPY --from=builder yarn/src/github.com/willpxxr/za-wurldo/frontend/build/ /usr/local/bin/frontend/
 

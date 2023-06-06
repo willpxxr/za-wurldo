@@ -12,7 +12,7 @@ WORKDIR /go/src/github.com/willpxxr/za-wurldo/backend/cmd
 
 RUN go build -o backend
 
-FROM alpine:3.15
+FROM alpine:3
 
 COPY --from=builder /go/src/github.com/willpxxr/za-wurldo/backend/cmd/backend /usr/local/bin/
 
